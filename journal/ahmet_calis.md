@@ -1,10 +1,10 @@
-# John Doe's Data Science Project Competition journal
+# Ahmet Calis's Data Science Project Competition journal
 
 ## February 2020 (8h)
 
-* 26. (2h): Watched XGBoost tutorials. I think XGBoost will be the best machine learning algorithm for our project.
-* 27. (2h): XGBoost implementation. I am using XGBoost from the xgboost python library.
-* 28. (4h): Data preparation for XGBoost and test runs. Before running initial XGBoost test I had to prepare data in an appropriate format. First test runs look promising!
+* 26. (0.5h): Checked the FMRI sources that professor provided.
+* 27. (1.5h): Watched Python FMRI Analysis tutorials
+* 28. (1h): Since we had too many columns, I did feature selections.
 
 ## March 2020 (2h)
 
