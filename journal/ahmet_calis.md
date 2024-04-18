@@ -1,6 +1,6 @@
 # Ahmet Calis's Data Science Project Competition journal
 
-## February 2020 (8h)
+## February 2020 (3.5h)
 
 - (0.5h): Checked the FMRI sources that professor provided.
 - (0.5h): Explored the neural_parcellated_gbc.csv dataset.
