@@ -9,7 +9,7 @@
 * 22. (0.5h): Meeting with supervisor.
 
 
-## April 2020 (21.5h)
+## April 2020 (22.5h)
 
 * 2. (2h): First attempt at processing data with new 12 region parcellation.
 * 3. (5h): Processing data with new parcellation correctly, adapting evaluation notebooks to work with the new data, trying different 
@@ -19,7 +19,7 @@ parameters to see if accuracy improved.
 * 17. (1h): Processing corrected gbc data with 12 region parcellation
 * 17. (2h): Retesting and improving evaluation of models built with the different datasets. Comparing the results.
 * 17. (6h): Literature review, summarizing B-SNIP paper of the data, writing interim report. 
-* 18. (3h): Finishing up the interim report. Retesting results, adding uncertainty and correcting train set performance calculation.
+* 18. (4h): Finishing up the interim report. Retesting results, adding uncertainty and correcting train set performance calculation.
 
 ...
 
@@ -31,4 +31,4 @@ parameters to see if accuracy improved.
 
 ...
 
-## Total: 29.5h
+## Total: 30.5h
