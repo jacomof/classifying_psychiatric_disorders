@@ -5,7 +5,7 @@
 - (0.5h): Checked the FMRI sources that professor provided.
 - (0.5h): Explored the neural_parcellated_gbc.csv dataset.
 - (1.5h): Watched Python FMRI Analysis tutorials
-- (1h): Since we had too many columns, I did feature selections.
+- (1h): I did feature selection to reduce the amount of features.
 
 ## March 2020 (3h)
 
