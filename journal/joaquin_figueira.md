@@ -1,6 +1,6 @@
 # John Doe's Data Science Project Competition journal
 
-## March 2020 (3h)
+## March 2020 (8h)
 
 * 8. (0.5): Meeting with supervisor.
 * 14. (2h): Read about fMRIs and their storage formats NIfTI-1 & 2. Read 
@@ -9,7 +9,7 @@
 * 22. (0.5h): Meeting with supervisor.
 
 
-## April 2020 ([total hours for March])
+## April 2020 (21.5h)
 
 * 2. (2h): First attempt at processing data with new 12 region parcellation.
 * 3. (5h): Processing data with new parcellation correctly, adapting evaluation notebooks to work with the new data, trying different 
@@ -31,4 +31,4 @@ parameters to see if accuracy improved.
 
 ...
 
-## Total: [total sum of hours]
+## Total: 29.5h
