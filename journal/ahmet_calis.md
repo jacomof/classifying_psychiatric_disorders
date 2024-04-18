@@ -9,7 +9,7 @@
 
 ## March 2020 (3h)
 
-- (3h): Extracted graph statistics and combined them with behavior data for training. Trained XGBoost model and fine tuned model parameters. 
+- (3h): Extracted graph statistics for training. Trained XGBoost model and fine tuned model parameters. 
 
 
 
