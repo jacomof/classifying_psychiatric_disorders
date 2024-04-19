@@ -6,7 +6,7 @@
         (1.5h): Debug the dataset and the code. Read the paper: Self- and Semi-Supervised learning for Tabular Domain. This paper could help us to create syntetic data to increase the number of samples in all categories.
         (1.5h): Explored data augmentation and feature selection over the same last baselines
 
-## April 2024 (14)
+## April 2024 (14h)
         (2h): Explorationn of the PhD thesis "The Contribution of Temporal Information in the Computation of Brain Functional Connectivity When Assessing Its Association with Interpersonal Differences in Behaviour"
         (4h): Implementation of a notebook to explore .pconn.nii files and create graphs based in the strong correlation between regions
         (8h): Report creation and SOTA review
