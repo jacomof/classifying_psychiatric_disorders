@@ -20,7 +20,6 @@
 %----------------------------------------------------------------------------------------
 \documentclass[fleqn,moreauthors,10pt]{ds_report}
 \usepackage[english]{babel}
-
 \graphicspath{{fig/}}
 
 
@@ -38,25 +37,25 @@
 %\Archive{Final report} 
 
 % Article title
-\PaperTitle{Data Science Project Competition Latex Template} 
+\PaperTitle{Classifying Psychiatric Disorders} 
 
 % Authors (student competitors) and their info
-\Authors{John Doe, Jane Doe, and Mike Smith}
+\Authors{Ahmet Çalış, Manfred Gonzalez-Hernandez, and Joaquín Figueira}
 
 % Advisors
-\affiliation{\textit{Advisors: prof. Janez Novak, dr. Alica Kavčič}}
+\affiliation{\textit{Advisors: Prof. Dr. Jure Demšar}}
 
 % Keywords
-\Keywords{Keyword1, Keyword2, Keyword3 ...}
+\Keywords{Data Science, Psychiatry, fMRI, cGCN, B-SNIP, GBC, FC}
 \newcommand{\keywordname}{Keywords}
 
 
 %----------------------------------------------------------------------------------------
 %	ABSTRACT
 %----------------------------------------------------------------------------------------
-
 \Abstract{
-The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here.
+
+In recent times the need for a bioneurological basis to treat psychosis spectrum disorders has become apparent, as the clinical treatment of these disorders still relies on self-reported behavioral analysis of the patients which has proven to be inaccurate. In this work we use dimensionality reduced data from fMRI scans to predict the disorders of a set of 711 psychosis spectrum disorder patients and control group, with the ultimate goal of finding a small latent space of the fMRI data in which the different disorders and their symptoms are clearly distinguishable. The preliminary results suggest that it's possible to accurately differentiate a patient from the control group, but predicting specific disorders and symptomatic scales has proven unsuccessful. 
 }
 
 %----------------------------------------------------------------------------------------
@@ -77,155 +76,108 @@ The abstract goes here. The abstract goes here. The abstract goes here. The abst
 %----------------------------------------------------------------------------------------
 
 \section*{Introduction}
-	These latex files are intended to serve as a the template for the FRI Data Science Project Competition. If you find mistakes in the template or have problems using it, please consult Jure Demšar (\href{mailto:jure.demsar@fri.uni-lj.si}{jure.demsar@fri.uni-lj.si}).
-	
-	In the Introduction section you should write about the relevance of your work (what is the purpose of the project, what will we solve) and about related work (what solutions for the problem already exist). Where appropriate, reference scientific work conducted by other researchers. For example, the work done by Demšar et al. \cite{Demsar2016BalancedMixture} is very important for our project. The abbreviation et al. is for et alia, which in latin means and others, we use this abbreviation when there are more than two authors of the work we are citing. If there are two authors (or if there is a single author) we just write down their surnames. For example, the work done by Demšar and Lebar Bajec \cite{Demsar2017LinguisticEvolution} is also important for successful completion of our project.
+
+    Given the high levels of complexity of the human brain and its associated afflictions, diagnosing and treating psychiatric disorders is a notoriously challenging endeavor. This is specially true in the psychosis spectrum of disorders (PSD), where the literature shows that, due to its greater symptomatic variability, there is a pressing need for more complex and individualized patient care.
+
+    One of the biggest impediments to this sort of treatment is the fact that traditional clinical approaches used to diagnose and treat these disorders relay on behavioral and self reported observations of the patients symptoms, such as the Positive and Negative Syndrome Scale (PANSS). Although a successful neural mapping across canonical schizofrenia (SZP) symptoms has been found in previous works \cite{Chen2020}, the field still lacks an accurate neural mapping for the full spectrum of pyschosis disorders. Finding such a mapping could be used to provide more accurate forms of treatments and diagnosis with a sound biomolecular basis.
+
+    In this context, this project aims to bridge this behavioral-neurological gap by developing Machine Learning (ML) approaches to relate different patient fMRI scans with their corresponding PANSS scores, using data obtained by the Bipolar and Schizophrenia Network for Intermediate Phenotypes consortium (B-SNIP)\cite{Clementz2016}. The data consists of a set of PANSS scores and resting state fMRIs scans from patients diagnosed with schizophrenia (SZP), schizoaffective disorder (SADP) and bipolar disorder with psychosis (BPP), and a control group (CON). The ultimate objective of this work is to build a classifier that can accurately predict the specific disorder of a patient using their corresponding fMRI data, and use it to find a small latent space representation of the neural data that highly correlates to PSD symptoms.
+    
+
+\iffalse    
+    Using this data we can also build Functional Connectivity representations between brain regions, which has been shown to find important patterns in brain activity \cite{Matkovič_2024, Wang2021-ts}. One of such representations are connectivity-based graphs convolutional networks (cGCN) architecture for fMRI analysis, allowing the extraction of spatial features from connectomic neighborhoods, showing effectiveness in individual identification and classification of ASD patients in \cite{Wang2021-ts}. The proposed architecture was applied to supervised classification experiments using rs-fMRI data from the Human Connectome Project, showcasing its performance in identifying subjects based on their rs-fMRI data.
+
+        In addition to the patient and control groups PANSS scores, the data is composed of a set of time series of 3D-images for each patient of different regions of the brain, from which we obtain a set of correlation-based connectivity features by finding the correlations between regions across time. We used two of such connectivity feature extraction methods, which has been proposed as imaging markers for several psychiatric disorders \cite{Kraus2020-ut}. Using this data we implemented several Machine learning models to build a binary classifier of sick or healthy patients. Then we escalated the analysis to a multi-label classifier of the different diagnosis of the patients.
+\fi
 
 
 %------------------------------------------------
 
 \section*{Methods}
+\label{sec:methods}
 
-Use the Methods section to describe what you did an how you did it -- in what way did you prepare the data, what algorithms did you use, how did you test various solutions ... Provide all the required details for a reproduction of your work.
+\subsection*{Data preprocessing and dimensionality reduction}
 
-Below are \LaTeX examples of some common elements that you will probably need when writing your report (e.g. figures, equations, lists, code examples ...).
+An fMRI scan records the brain activity of a patient through blood oxygenation measurements. In these measurements the fMRI scanner intrinsically divides the brain into different regions (formally called voxels) according to a pre-defined spatial resolution, which tipycally results in a subdivision of the brain in around 90,000 voxels. The result is a time series of 3-D images of blood oxygenation levels for each voxel sampled with an approximate time resolution of 1.5 seconds during 20-30 minutes, which all combined amounts to very large data volumens for even a single patient.  
 
+As the high dimensionality of this data representation would probably lead to high degrees of overfitting and excessively high runtimes, we used several dimensionality reduction techniques to make it more digestible. First, we merged voxels into regions of interest (ROIs), for which we used two parcellations: the Glasser parcellation which has 718 ROIs and the Cole-Anticevic parcellations whith 12 ROIs.
 
-\subsection*{Equations}
+With this first reduction we obtained a time series of images with more compact resolutions. However, the data volume was still intractable due to the size of the time dimension of the series. To tackle this we used two other techniques for time dimensionality reduction: Functional Connectome (FC) and Global Brain Connectivity (GBC). The first approach, FC, measures the total correlation between each pair of ROIs across time. In other words, for a parcellation with $r$ ROIs, the data is reduced to a $\mathbb{R}^{r\times r}$ matrix. The second approach, GBC, computes the average correlation between one ROI and all the others across time, resulting in a $r$ dimensional vector. 
 
-You can write equations inline, e.g. $\cos\pi=-1$, $E = m \cdot c^2$ and $\alpha$, or you can include them as separate objects. The Bayes’s rule is stated mathematically as:
+\subsection*{Models}
+%These are all the traditional machine learning algorithms we used over the tabular data
+The initial solution we implemented for the first part of the competition was using the GBC data with both mentioned parcellations to predict the patients' health status (i.e whether the person has a disorder or not) and specific disorder. We trained 6 different classifiers on these data for each parcellation: three classifiers for binary health status classification, three classifiers for multi-label disorder classification. 
 
-\begin{equation}
-	P(A|B) = \frac{P(B|A)P(A)}{P(B)},
-	\label{eq:bayes}
-\end{equation}
+To build these classifiers we used three learners: random forests, XGBoost and MLPs. As random forests are known to perform relatively well with little parameter and feature extraction procedures, we decided to use them as a general baseline. Since we're working in the medical domain, explainability is key, which is the reason why we decided to use XGBoost as our main classification model, as it provides both decent performance and explainability. Additionally, it can perform well in low sample environments. To test more complex feature interaction models, we decided to use Multi Layer Perceptrons (MLP). 
 
-where $A$ and $B$ are some events. You can also reference it -- the equation \ref{eq:bayes} describes the Bayes's rule.
+Finally, we performed hyper-paramer tunning using a train-test split of the data (with test size of 20\%) and computed the models accuracy on each of the splits. 
 
-\subsection*{Lists}
+\section*{Results} \label{results}
 
-We can insert numbered and bullet lists:
+In this section we present the preliminary results of the models explained in the previous section. The results for the 718 ROI Glasser parcellation are presented in tables \ref{tab:glassier_binary_classification} and \ref{tab:glasser_multiclass_classification}, while the results for the 12 ROI Cole-Anticevic parcellation are presented in tables \ref{tab:cole_binary_classification} and \ref{tab:cole_multiclass_classification}.
 
-% the [noitemsep] option makes the list more compact
-\begin{enumerate}[noitemsep] 
-	\item First item in the list.
-	\item Second item in the list.
-	\item Third item in the list.
-\end{enumerate}
-
-\begin{itemize}[noitemsep] 
-	\item First item in the list.
-	\item Second item in the list.
-	\item Third item in the list.
-\end{itemize}
-
-We can use the description environment to define or describe key terms and phrases.
-
-\begin{description}
-	\item[Word] What is a word?.
-	\item[Concept] What is a concept?
-	\item[Idea] What is an idea?
-\end{description}
+% Random Forests
+% XGBoost
+% MLP
 
 
-\subsection*{Random text}
-
-This text is inserted only to make this template look more like a proper report. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit dictum facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam convallis tellus velit, quis ornare ipsum aliquam id. Maecenas tempus mauris sit amet libero elementum eleifend. Nulla nunc orci, consectetur non consequat ac, consequat non nisl. Aenean vitae dui nec ex fringilla malesuada. Proin elit libero, faucibus eget neque quis, condimentum laoreet urna. Etiam at nunc quis felis pulvinar dignissim. Phasellus turpis turpis, vestibulum eget imperdiet in, molestie eget neque. Curabitur quis ante sed nunc varius dictum non quis nisl. Donec nec lobortis velit. Ut cursus, libero efficitur dictum imperdiet, odio mi fermentum dui, id vulputate metus velit sit amet risus. Nulla vel volutpat elit. Mauris ex erat, pulvinar ac accumsan sit amet, ultrices sit amet turpis.
-
-Phasellus in ligula nunc. Vivamus sem lorem, malesuada sed pretium quis, varius convallis lectus. Quisque in risus nec lectus lobortis gravida non a sem. Quisque et vestibulum sem, vel mollis dolor. Nullam ante ex, scelerisque ac efficitur vel, rhoncus quis lectus. Pellentesque scelerisque efficitur purus in faucibus. Maecenas vestibulum vulputate nisl sed vestibulum. Nullam varius turpis in hendrerit posuere.
-
-
-\subsection*{Figures}
-
-You can insert figures that span over the whole page, or over just a single column. The first one, \figurename~\ref{fig:column}, is an example of a figure that spans only across one of the two columns in the report.
-
-\begin{figure}[ht]\centering
-	\includegraphics[width=\linewidth]{single_column.pdf}
-	\caption{\textbf{A random visualization.} This is an example of a figure that spans only across one of the two columns.}
-	\label{fig:column}
-\end{figure}
-
-On the other hand, \figurename~\ref{fig:whole} is an example of a figure that spans across the whole page (across both columns) of the report.
-
-% \begin{figure*} makes the figure take up the entire width of the page
-\begin{figure*}[ht]\centering 
-	\includegraphics[width=\linewidth]{whole_page.pdf}
-	\caption{\textbf{Visualization of a Bayesian hierarchical model.} This is an example of a figure that spans the whole width of the report.}
-	\label{fig:whole}
-\end{figure*}
-
-
-\subsection*{Tables}
-
-Use the table environment to insert tables.
-
-\begin{table}[hbt]
-	\caption{Table of grades.}
-	\centering
-	\begin{tabular}{l l | r}
-		\toprule
-		\multicolumn{2}{c}{Name} \\
-		\cmidrule(r){1-2}
-		First name & Last Name & Grade \\
-		\midrule
-		John & Doe & $7.5$ \\
-		Jane & Doe & $10$ \\
-		Mike & Smith & $8$ \\
-		\bottomrule
-	\end{tabular}
-	\label{tab:label}
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Metric} & \textbf{XGBoost} & \textbf{Random Forest}& \textbf{MLP} \\ \hline
+Accuracy (Tr) & 1.0 & 1.0 & 1.0 \\ \hline
+Accuracy (Ts) & 0.984 & 0.977 & 0.98 \\ \hline
+\end{tabular}
+\caption{\textbf{Binary classification results using the Glasser parcellation data}. The top row shows prediction accuracy on the training set (Tr), while the bottom row shows prediciton accuracy o the test set (Ts).}
+\label{tab:glassier_binary_classification}
 \end{table}
 
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Metric} & \textbf{XGBoost} & \textbf{Random Forest} & \textbf{MLP} \\ \hline
+Accuracy (Tr) & 1.0 & 1.0 & 1.0 \\ \hline
+Accuracy (Ts) & 0.578 & 0.586 & 0.55 \\ \hline
+\end{tabular}
+\caption{\textbf{Multiclass classifications results using the Glasser parcellation data}. The top row shows prediction accuracy on the training set (Tr), while the bottom row shows prediciton accuracy o the test set (Ts).}
+\label{tab:glasser_multiclass_classification}
+\end{table}
 
-\subsection*{Code examples}
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Metric} & \textbf{XGBoost} & \textbf{Random Forest}& \textbf{MLP} \\ \hline
+Accuracy (Tr) & 1.0 & 1.0 & 0.82 \\ \hline
+Accuracy (Ts) & 0.648 & 0.617 & 0.62 \\ \hline
+\end{tabular}
+\caption{\textbf{Binary classification results using the Cole-Antisevic parcellation data}. The top row shows prediction accuracy on the training set (Tr), while the bottom row shows prediciton accuracy o the test set (Ts).}
+\label{tab:cole_binary_classification}
+\end{table}
 
-You can also insert short code examples. You can specify them manually, or insert a whole file with code. Please avoid inserting long code snippets, advisors will have access to your repositories and can take a look at your code there. If necessary, you can use this technique to insert code (or pseudo code) of short algorithms that are crucial for the understanding of the manuscript.
-
-\lstset{language=Python}
-\lstset{caption={Insert code directly from a file.}}
-\lstset{label={lst:code_file}}
-\lstinputlisting[language=Python]{code/example.py}
-
-\lstset{language=R}
-\lstset{caption={Write the code you want to insert.}}
-\lstset{label={lst:code_direct}}
-\begin{lstlisting}
-import(dplyr)
-import(ggplot)
-
-ggplot(diamonds,
-	   aes(x=carat, y=price, color=cut)) +
-  geom_point() +
-  geom_smooth()
-\end{lstlisting}
-
-%------------------------------------------------
-
-\section*{Results}
-
-Use the results section to present the final results of your work. Present the results in a objective and scientific fashion. Use visualisations to convey your results in a clear and efficient manner. When comparing results between various techniques use appropriate statistical methodology.
-
-\subsection*{More random text}
-
-This text is inserted only to make this template look more like a proper report. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit dictum facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam convallis tellus velit, quis ornare ipsum aliquam id. Maecenas tempus mauris sit amet libero elementum eleifend. Nulla nunc orci, consectetur non consequat ac, consequat non nisl. Aenean vitae dui nec ex fringilla malesuada. Proin elit libero, faucibus eget neque quis, condimentum laoreet urna. Etiam at nunc quis felis pulvinar dignissim. Phasellus turpis turpis, vestibulum eget imperdiet in, molestie eget neque. Curabitur quis ante sed nunc varius dictum non quis nisl. Donec nec lobortis velit. Ut cursus, libero efficitur dictum imperdiet, odio mi fermentum dui, id vulputate metus velit sit amet risus. Nulla vel volutpat elit. Mauris ex erat, pulvinar ac accumsan sit amet, ultrices sit amet turpis.
-
-Phasellus in ligula nunc. Vivamus sem lorem, malesuada sed pretium quis, varius convallis lectus. Quisque in risus nec lectus lobortis gravida non a sem. Quisque et vestibulum sem, vel mollis dolor. Nullam ante ex, scelerisque ac efficitur vel, rhoncus quis lectus. Pellentesque scelerisque efficitur purus in faucibus. Maecenas vestibulum vulputate nisl sed vestibulum. Nullam varius turpis in hendrerit posuere.
-
-Nulla rhoncus tortor eget ipsum commodo lacinia sit amet eu urna. Cras maximus leo mauris, ac congue eros sollicitudin ac. Integer vel erat varius, scelerisque orci eu, tristique purus. Proin id leo quis ante pharetra suscipit et non magna. Morbi in volutpat erat. Vivamus sit amet libero eu lacus pulvinar pharetra sed at felis. Vivamus non nibh a orci viverra rhoncus sit amet ullamcorper sem. Ut nec tempor dui. Aliquam convallis vitae nisi ac volutpat. Nam accumsan, erat eget faucibus commodo, ligula dui cursus nisi, at laoreet odio augue id eros. Curabitur quis tellus eget nunc ornare auctor.
-
-
-%------------------------------------------------
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Metric} & \textbf{XGBoost} & \textbf{Random Forest} & \textbf{MLP} \\ \hline
+Accuracy (Tr) & 1.0 & 1.0 & 0.39 \\ \hline
+Accuracy (Ts) & 0.367 & 0.312 & 0.35 \\ \hline
+\end{tabular}
+\caption{\textbf{Multiclass classifications results using the Cole-Antisevic parcellation data}. The top row shows prediction accuracy on the training set (Tr), while the bottom row shows prediciton accuracy o the test set (Ts).}
+\label{tab:cole_multiclass_classification}
+\end{table}
 
 \section*{Discussion}
+The results so far suggest that the problem of identifying the binary health status of a patient using fMRI data is solvable, as already suggested in the literature. However, the classification of specific disorders seems to be a more complex problem, and it will require more involved data processing and modeling to achieve good results. The results also shows high amounts of overfitting for this last task.  Finally, the 12 region data parcellation seems to compress the structural information of the brain activation data too excessively, obscuring the relationship between the disorders and their neurological expression resulting in very poor classification accuracies.
 
-Use the Discussion section to objectively evaluate your work, do not just put praise on everything you did, be critical and exposes flaws and weaknesses of your solution. You can also explain what you would do differently if you would be able to start again and what upgrades could be done on the project in the future.
+\section*{Future Work}
+In the upcoming stage of our research, we will pursue the development of a graph-based framework to enrich feature extraction methods and augment multi-class classification accuracy. By employing a k-Nearest Neighbors graph that treats brain regions as nodes and functional connectivity as edges, we plan to refine the graph structure using the hyperparameter k to judiciously prune and maintain essential connections. Under this architecture, these graphs could be the initial stage of graph Convolutional Neural Networks (gCNN) for classification \cite{Wang2021-ts}.
 
-
+Complementing this, we aspire to design an autoencoder that leverages Global Brain Connectivity (GBC) data to distill a 3D latent space, which will be scrutinized for potential correlations with classification targets. The dissection of this latent space is anticipated to uncover underlying data structures that correlate with diagnostic categories, offering a novel avenue to boost classification performance.
 %------------------------------------------------
 
-\section*{Acknowledgments}
-
-Here you can thank other persons (advisors, colleagues ...) that contributed to the successful completion of your project.
 
 
 %----------------------------------------------------------------------------------------

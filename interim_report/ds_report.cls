@@ -71,10 +71,10 @@
 %	MARGINS	
 %----------------------------------------------------------------------
 	  	  
-\RequirePackage[left=2cm,%
-right=2cm,%
-top=2.25cm,%
-bottom=2.25cm,%
+\RequirePackage[left=1.4cm,%
+right=1.4cm,%
+top=1.7cm,%
+bottom=1.7cm,%
 headheight=11pt,%
 letterpaper]{geometry}%
 
