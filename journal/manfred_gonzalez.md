@@ -9,6 +9,7 @@
 April 2024 ([total hours for March])
         (1h): Explorationn of the PhD thesis "The Contribution of Temporal Information in the Computation of Brain Functional Connectivity When Assessing Its Association with Interpersonal Differences in Behaviour"
         (2h): Implementation of a notebook to explore .pconn.nii files and create graphs based in the strong correlation between regions
+        (6h): Report creation and SOTA review
 ...
 May 2024 ([total hours for May])
 
