@@ -9,7 +9,7 @@
 * 22. (0.5h): Meeting with supervisor.
 
 
-## April 2020 (28.5h)
+## April 2020 (29h)
 
 * 2. (2h): First attempt at processing data with new 12 region parcellation.
 * 3. (5h): Processing data with new parcellation correctly, adapting evaluation notebooks to work with the new data, trying different 
@@ -20,7 +20,9 @@ parameters to see if accuracy improved.
 * 17. (2h): Retesting and improving evaluation of models built with the different datasets. Comparing the results.
 * 17. (6h): Literature review, summarizing B-SNIP paper of the data, writing interim report. 
 * 18. (4h): Finishing up the interim report. Retesting results, adding uncertainty and correcting train set performance calculation.
+* 19. (0.5): Meeting with supervisor.
 * 19. (6h): Correcting report with comments from professor, reading manuscript of study that inspired the project. 
+
 ...
 
 ## May 2020 ([total hours for May])
@@ -31,4 +33,4 @@ parameters to see if accuracy improved.
 
 ...
 
-## Total: 36.5h
+## Total: 37.0h
