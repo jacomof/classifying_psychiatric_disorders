@@ -18,6 +18,7 @@ May 2024 (18h)
         (2h): Paper reading for Motif and Graphlets
         (4h): Orca in windows for orbit similarity
         (12h): network analysis understanding
+        (8): ORCA experiments - arithmetic and geometric agreement
 ...
 June 2024 ([total hours for June])
 

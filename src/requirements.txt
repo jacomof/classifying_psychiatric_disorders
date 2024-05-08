@@ -1,0 +1,8 @@
+nibabel
+numpy
+networkx
+pandas
+tqdm
+matplotlib
+cdlib
+regex
