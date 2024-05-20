@@ -31,7 +31,10 @@
 *-blx.aux
 *-blx.bib
 *.run.xml
-
+*.png
+*.orca
+*.csv
+*.txt
 ## Build tool auxiliary files:
 *.fdb_latexmk
 *.synctex
