@@ -42,7 +42,7 @@
 *.synctex.gz
 *.synctex.gz(busy)
 *.pdfsync
-
+src/*.pdf
 ## Build tool directories for auxiliary files
 # latexrun
 latex.out/
