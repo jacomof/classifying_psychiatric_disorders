@@ -14,12 +14,17 @@
         (2h): Group meetings
         (12h): network analysis understanding
 ...
-May 2024 (18h)
+May 2024 (118h)
         (2h): Paper reading for Motif and Graphlets
         (4h): Orca in windows for orbit similarity
         (12h): network analysis understanding
-        (8): ORCA experiments - arithmetic and geometric agreement
-...
+        (8h): ORCA experiments - arithmetic and geometric agreement
+        (42h): ORCA orbits computation for different graph architectures
+        (2h): Group meetings
+        (24h): D-measure dissimilarity experiments
+        (4h): Experiment visualizatoins
+        (8h): Report - Presentation results
+...     (12h): Quick experiment on Kernel graphs similarity
 June 2024 ([total hours for June])
 
 ...
