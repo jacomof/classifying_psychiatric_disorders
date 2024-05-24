@@ -413,13 +413,22 @@ class Neural3DEncoderDeep(nn.Module):
 
 
 if __name__ == '__main__':
+    """ Main function used for testing the neural encoder.
+    """
+
+    # Load the dataset
     dataset_pd = pd.read_csv(DATA_SOURCE_PATH)
     print(dataset_pd.columns)
+    
+    # Create a custom dataset and dataloader
     custom_dataset = CustomDatasetFromDF(dataset_pd.copy())
     dataloader = DataLoader(custom_dataset, batch_size=16, shuffle=True)
+    
+    # Train the neural encoder
     neural_encoder = NeuralEncoder()
     neural_encoder = neural_encoder.train_model(dataloader, epochs=10, lr=0.01)
     
+    # Generate the embeddings
     PANSS_selector = dataset_pd.columns[dataset_pd.columns.str.contains('PANSS')]
     X = dataset_pd.drop(columns=list(PANSS_selector)+['Group', 'id']).values
     print(neural_encoder.generate_embedding(X))
