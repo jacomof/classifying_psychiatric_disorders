@@ -14,7 +14,7 @@
         (2h): Group meetings
         (12h): network analysis understanding
 ...
-May 2024 (118h)
+## May 2024 (118h)
         (2h): Paper reading for Motif and Graphlets
         (4h): Orca in windows for orbit similarity
         (12h): network analysis understanding
@@ -24,9 +24,9 @@ May 2024 (118h)
         (24h): D-measure dissimilarity experiments
         (4h): Experiment visualizatoins
         (8h): Report - Presentation results
-...     (12h): Quick experiment on Kernel graphs similarity
-June 2024 ([total hours for June])
+        (12h): Quick experiment on Kernel graphs similarity
+
 
 ...
-Total: [total sum of hours]
+Total: 165.5
 
