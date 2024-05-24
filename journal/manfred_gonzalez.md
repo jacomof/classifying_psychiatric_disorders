@@ -14,7 +14,7 @@
         (2h): Group meetings
         (12h): network analysis understanding
 ...
-May 2024 (118h)
+## May 2024 (118h)
         (2h): Paper reading for Motif and Graphlets
         (4h): Orca in windows for orbit similarity
         (12h): network analysis understanding
