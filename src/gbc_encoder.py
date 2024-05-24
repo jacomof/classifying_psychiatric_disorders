@@ -12,6 +12,15 @@ DATA_SOURCE_PATH = '../../data/processed/pscalar/neural_gbc_nn.csv'
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class CustomDatasetFromDF(Dataset):
+    """Custom dataset class for loading data from a pandas dataframe.
+
+    Args:
+        dataframe (pd.DataFrame): The dataframe containing the data.
+
+    Parameters:
+        dataframe (pd.DataFrame): The dataframe containing the data.
+        target_columns (pd.Index): The columns containing the target values.
+    """
     def __init__(self, dataframe):
         self.dataframe = dataframe
         self.dataframe.drop(columns=['Group', 'id'], inplace=True)
@@ -27,6 +36,16 @@ class CustomDatasetFromDF(Dataset):
         return neural_vector, targets
     
 class CustomDatasetFromNumpy(Dataset):
+    """Custom dataset class for loading data from a numpy array.
+    
+    Args:
+        data (np.ndarray): The data.
+        targets (np.ndarray): The target values.
+
+    Parameters:
+        data (np.ndarray): The data.
+        targets (np.ndarray): The target values.
+    """
     def __init__(self, data, targets):
         self.data = torch.tensor(data, dtype=torch.float)
         self.targets = torch.tensor(targets, dtype=torch.float)
@@ -39,6 +58,18 @@ class CustomDatasetFromNumpy(Dataset):
 
 
 class NeuralEncoder(nn.Module):
+    """A simple neural network 2D encoder for the GBC data.
+    
+    Args:
+        activation (torch.nn.Module): The activation function to use.
+    
+    Parameters:
+        activation (torch.nn.Module): The activation function to use.
+        encoder (torch.nn.Linear): The first linear layer.
+        hidden1 (torch.nn.Linear): The second linear layer.
+        hidden2 (torch.nn.Linear): The third linear layer.
+        decoder (torch.nn.Linear): The fourth linear layer.
+    """
     def __init__(self, activation=nn.ReLU()):
         super(NeuralEncoder, self).__init__()
         self.activation = activation
@@ -51,6 +82,14 @@ class NeuralEncoder(nn.Module):
         self.decoder = nn.Linear(hidden_dim, output_dim, device=device)
 
     def forward(self, x):
+        """Forward pass of the neural network.
+
+        Args:
+            x (torch.Tensor): The input data.
+        
+        Returns:
+            torch.Tensor: The output of the neural network.
+        """
         x = x.to(device)
         x = self.activation(self.encoder(x))
         x = self.activation(self.hidden1(x))
@@ -58,30 +97,6 @@ class NeuralEncoder(nn.Module):
         x = self.activation(self.decoder(x))
         return x
     
-    def predict(self, data):
-        self.to(device)
-        self.eval()
-        data = data.to(device)
-        with torch.no_grad():
-            return self(data)
-        
-    def generate_embedding(self, data):
-        data = torch.tensor(data, dtype=torch.float)
-        self.to(device)
-        self.eval()
-        data = data.to(device)
-        with torch.no_grad():
-            embds = self.activation(self.encoder(data))
-            embds = self.activation(self.hidden1(embds))
-            return embds.cpu().numpy()
-        
-        
-class TrainableNeuralEncoder(NeuralEncoder):
-
-    def __init__(self, activation=nn.ReLU()):
-        super(TrainableNeuralEncoder, self).__init__(activation)
-        self.activation = activation
-
     def train_model(self, dataloader, epochs=10, lr=0.01):
         self.to(device)
         criterion = nn.MSELoss()
@@ -97,9 +112,56 @@ class TrainableNeuralEncoder(NeuralEncoder):
             print(f'Epoch {epoch+1}, Loss: {loss.item()}')
         print('Training complete!')
         return self
+    
+    def predict(self, data):
+        """Predict the output of the neural network.
+
+        Args:
+            data (torch.Tensor): The input data.
+        
+        Returns:
+            torch.Tensor: The output of the neural network.
+        """
+        self.to(device)
+        self.eval()
+        data = data.to(device)
+        with torch.no_grad():
+            return self(data)
+        
+
+        
+    def generate_embedding(self, data):
+        """Generate the embeddings of the input data.
+
+        Args:
+            data (np.ndarray): The input data.
+        
+        Returns:
+            np.ndarray: The embeddings of the input data.
+        """
+        data = torch.tensor(data, dtype=torch.float)
+        self.to(device)
+        self.eval()
+        data = data.to(device)
+        with torch.no_grad():
+            embds = self.activation(self.encoder(data))
+            embds = self.activation(self.hidden1(embds))
+            return embds.cpu().numpy()
 
 
 class Neural3DEncoder(nn.Module):
+    """Neural network for the 3D embeddings of the GBC data.
+
+    Args:
+        activation (torch.nn.Module): The activation function to use.
+    
+    Parameters:
+        activation (torch.nn.Module): The activation function to use.
+        encoder (torch.nn.Linear): The first linear layer.
+        hidden1 (torch.nn.Linear): The second linear layer.
+        hidden2 (torch.nn.Linear): The third linear layer.
+        decoder (torch.nn.Linear): The fourth linear layer.
+    """
     def __init__(self, activation=nn.ReLU()):
         super(Neural3DEncoder, self).__init__()
         self.activation = activation
@@ -112,6 +174,14 @@ class Neural3DEncoder(nn.Module):
         self.decoder = nn.Linear(hidden_dim, output_dim, device=device)
 
     def forward(self, x):
+        """Forward pass of the neural network.
+
+        Args:
+            x (torch.Tensor): The input data.
+        
+        Returns:
+            torch.Tensor: The output of the neural network.
+        """
         x = x.to(device)
         x = self.activation(self.encoder(x))
         x = self.activation(self.hidden1(x))
@@ -120,6 +190,16 @@ class Neural3DEncoder(nn.Module):
         return x
     
     def train_model(self, dataloader, epochs=10, lr=0.01):
+        """Train the neural network.
+
+        Args:
+            dataloader (torch.utils.data.DataLoader): The dataloader.
+            epochs (int): The number of epochs.
+            lr (float): The learning rate.
+
+        Returns:
+            Neural3DEncoder: The trained neural network.
+        """
         self.to(device)
         criterion = nn.MSELoss()
         optimizer = torch.optim.Adam(self.parameters(), lr=lr)
@@ -136,6 +216,14 @@ class Neural3DEncoder(nn.Module):
         return self
     
     def predict(self, data):
+        """Predict the output of the neural network.
+
+        Args:
+            data (torch.Tensor): The input data.
+
+        Returns:
+            torch.Tensor: The output of the neural network.
+        """
         self.to(device)
         self.eval()
         data = data.to(device)
@@ -143,6 +231,14 @@ class Neural3DEncoder(nn.Module):
             return self(data)
         
     def generate_embedding(self, data):
+        """Generate the embeddings of the input data.
+
+        Args:
+            data (np.ndarray): The input data.
+        
+        Returns:
+            np.ndarray: The embeddings of the input data.
+        """
         data = torch.tensor(data, dtype=torch.float)
         self.to(device)
         self.eval()
@@ -154,6 +250,21 @@ class Neural3DEncoder(nn.Module):
         
 
 class NeuralEncoderDeep(nn.Module):
+    """
+    A deeper neural network to generate 2D embeddings of the GBC data.
+
+    Args:
+        activation (torch.nn.Module): The activation function to use.
+
+    Parameters:
+        activation (torch.nn.Module): The activation function to use.
+        encoder (torch.nn.Linear): The first linear layer.
+        hidden1 (torch.nn.Linear): The second linear layer.
+        hidden2 (torch.nn.Linear): The third linear layer.
+        hidden3 (torch.nn.Linear): The fourth linear layer.
+        hidden4 (torch.nn.Linear): The fifth linear layer.
+        decoder (torch.nn.Linear): The sixth linear layer.
+    """
     def __init__(self, activation=nn.ReLU()):
         super(NeuralEncoderDeep, self).__init__()
         self.activation = activation
@@ -169,6 +280,14 @@ class NeuralEncoderDeep(nn.Module):
         self.decoder = nn.Linear(hidden_dim_1, output_dim, device=device)
 
     def forward(self, x):
+        """Forward pass of the neural network.
+        
+        Args:
+            x (torch.Tensor): The input data.
+            
+        Returns:
+            torch.Tensor: The output of the neural network.
+        """
         x = x.to(device)
         x = self.activation(self.encoder(x))
         x = self.activation(self.hidden1(x))
@@ -179,6 +298,14 @@ class NeuralEncoderDeep(nn.Module):
         return x
     
     def predict(self, data):
+        """Predict the output of the neural network.
+
+        Args:
+            data (torch.Tensor): The input data.
+        
+        Returns:
+            torch.Tensor: The output of the neural network.
+        """
         self.to(device)
         self.eval()
         data = data.to(device)
@@ -186,6 +313,14 @@ class NeuralEncoderDeep(nn.Module):
             return self(data)
         
     def generate_embedding(self, data):
+        """Generate the embeddings of the input data.
+
+        Args:
+            data (np.ndarray): The input data.
+        
+        Returns:
+            np.ndarray: The embeddings of the input data.
+        """
         data = torch.tensor(data, dtype=torch.float)
         self.to(device)
         self.eval()
@@ -196,6 +331,20 @@ class NeuralEncoderDeep(nn.Module):
             return embds.cpu().numpy()
         
 class Neural3DEncoderDeep(nn.Module):
+    """A deeper neural network to generate 3D embeddings of the GBC data.
+
+    Args:
+        activation (torch.nn.Module): The activation function to use.
+    
+    Parameters:
+        activation (torch.nn.Module): The activation function to use.
+        encoder (torch.nn.Linear): The first linear layer.
+        hidden1 (torch.nn.Linear): The second linear layer.
+        hidden2 (torch.nn.Linear): The third linear layer.
+        hidden3 (torch.nn.Linear): The fourth linear layer.
+        hidden4 (torch.nn.Linear): The fifth linear layer.
+        decoder (torch.nn.Linear): The sixth linear layer.
+    """
     def __init__(self, activation=nn.ReLU()):
         super(Neural3DEncoderDeep, self).__init__()
         self.activation = activation
@@ -211,6 +360,14 @@ class Neural3DEncoderDeep(nn.Module):
         self.decoder = nn.Linear(hidden_dim_1, output_dim, device=device)
 
     def forward(self, x):
+        """Forward pass of the neural network.
+
+        Args:
+            x (torch.Tensor): The input data.
+        
+        Returns:
+            torch.Tensor: The output of the neural network.
+        """
         x = x.to(device)
         x = self.activation(self.encoder(x))
         x = self.activation(self.hidden1(x))
@@ -221,6 +378,14 @@ class Neural3DEncoderDeep(nn.Module):
         return x
     
     def predict(self, data):
+        """Predict the output of the neural network.
+
+        Args:
+            data (torch.Tensor): The input data.
+
+        Returns:
+            torch.Tensor: The output of the neural network.
+        """
         self.to(device)
         self.eval()
         data = data.to(device)
@@ -228,6 +393,14 @@ class Neural3DEncoderDeep(nn.Module):
             return self(data)
         
     def generate_embedding(self, data):
+        """Generate the embeddings of the input data.
+
+        Args:
+            data (np.ndarray): The input data.
+        
+        Returns:
+            np.ndarray: The embeddings of the input data.
+        """
         data = torch.tensor(data, dtype=torch.float)
         self.to(device)
         self.eval()
@@ -244,7 +417,7 @@ if __name__ == '__main__':
     print(dataset_pd.columns)
     custom_dataset = CustomDatasetFromDF(dataset_pd.copy())
     dataloader = DataLoader(custom_dataset, batch_size=16, shuffle=True)
-    neural_encoder = TrainableNeuralEncoder()
+    neural_encoder = NeuralEncoder()
     neural_encoder = neural_encoder.train_model(dataloader, epochs=10, lr=0.01)
     
     PANSS_selector = dataset_pd.columns[dataset_pd.columns.str.contains('PANSS')]
