@@ -32,6 +32,6 @@
 - (8h): Understading of why that 5 features I found in the feature selection would be important. Checking graph statistics for that 5 features to identify it.
 - (2h): Model training with 5 features + networks statistics to see if network statistics can boost the performance.
 - (2h): Meeting with the professor. (in May)
-- (6h): Adding related parts to the report and the presentation.
+- (6h): Adding related parts to the report and the presentation. Correcting the report based on the feedback from supervisor.
   
 ## Total: [146h]
