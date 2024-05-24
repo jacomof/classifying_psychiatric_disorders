@@ -122,12 +122,12 @@ To build the models and evaluation we used a train-test split of the data with 2
 \begin{tabular}{|l|l| c|c|c|}
 \hline
 \textbf{Metric} & \textbf{Task} & \textbf{XGBoost} & \textbf{RF}& \textbf{MLP} \\ \hline
-Accuracy (Tr) & Status & 1.0 & 1.0 & 1.0  \\ \hline
-Accuracy (Ts) & Status & 0.984 & 0.977 & $0.98 \pm 0.02$ \\ \hline
-Accuracy (Tr) & Disorder & 1.0 & 1.0 & 1.0 \\ \hline
-Accuracy (Ts) & Disorder & 0 & 0.586 & $0.55 \pm 0.08$ \\ \hline
+Acc (Tr) & Status & 1.0 & 1.0 & 1.0  \\ \hline
+Accy (Ts) & Status & $0.984 \pm 0.02$ & $0.977 \pm 0.02$ & $0.98 \pm 0.02$ \\ \hline
+Acc (Tr) & Disorder & 1.0 & 1.0 & 1.0 \\ \hline
+Acc (Ts) & Disorder & $0.57 \pm 0.08$ & $0.586 \pm 0.08$ & $0.55 \pm 0.08$ \\ \hline
 \end{tabular}
-\caption{\textbf{Classification results before feature selection}. In the table \textit{Tr} stands for training and \textit{Ts} stands for test. Furthermore, the \textbf{task} column indicates the task: \textit{Status} refers to health status classification and \textit{Disorder} to disorder classification.}
+\caption{\textbf{Classification accuracy (Acc) results before feature selection}. In the table \textit{Tr} stands for training and \textit{Ts} stands for test. Furthermore, the \textbf{task} column indicates the task: \textit{Status} refers to health status classification and \textit{Disorder} to disorder classification.}
 \label{tab:glassier_classification}
 \end{table}
 
