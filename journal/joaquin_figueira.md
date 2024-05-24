@@ -1,11 +1,11 @@
 # Joaquin Figueira's Data Science Project Competition journal
 
-## March 2024 (19h)
+## March 2024 (17h)
 
 * 8. (0.5): Meeting with supervisor.
 * 14. (6h): Read about fMRIs and their storage formats NIfTI-1 & 2. Read about BSNIP and understanding the problem of PSD classification. 
-* 14. (4h): Explored the neural_parcellated_gbc.csv dataset. Visualized proportions of classes of the patients. Calcualted proportions of patients and control. 
-* 15. (6h): Learned about scikit-learn MLP classifier. Tested the model for binary classication of patient and control. Tested the model in multiclass classification of the diseases (BPP, SCZP, etc.). Performed hyper parameter tunning. Trained the models with best parameters and reported performance.
+* 14. (4h): Exploring the neural_parcellated_gbc.csv dataset.
+* 15. (6h): Learning about scikit-learn MLP classifier. Testing the model for binary classication of patient and control. Testing the model in multiclass classification of the diseases (BPP, SCZP, etc.). Performing hyper parameter tunning. Training the models with best parameters and reported performance.
 * 22. (0.5h): Meeting with supervisor.
 
 ...
@@ -26,7 +26,7 @@ parameters to see if accuracy improved.
 
 ...
 
-## May 2024 (101)
+## May 2024 (108)
 * 1. (6h): Reading and learning how to use pytorch. Researching how to implement latent space representation in Neural Networks.
 * 2. (8h): Reading and learning how to use pytorch. Researching how to implement latent space representation in Neural Networks.
 * 4. (6h): Learning about graph representations of neural data. Learning about how to construct graphs from the FC data.
@@ -41,6 +41,8 @@ parameters to see if accuracy improved.
 * 21. (6h): Exploring the usage of PCA and T-SNE on the data with different parameters. Creating plots and including them in the report.
 * 22. (6h): Revising journal and cleaning repository. Merging branches. Working on the report and on further processing of the data for more experiments.
 * 23. (10h): Working on the report, presentation and in Classification using Network parameters.
+* 24. (1h): Final meeting with the supervisor.
+* 24. (8h): Implementing feedback of the supervisor on the report and presentation. 
 
 ...
 
@@ -48,4 +50,4 @@ parameters to see if accuracy improved.
 
 ...
 
-## Total: 37.0h
+## Total: 167.0h
