@@ -1,4 +1,4 @@
-# README #
+# Classifying Psychiatric Disorders #
 
 Data Science project for the classification of psicosis spectrum disorders (PSD) using resting state neuroimaging data (fMRI scans). This project was developed for the Data Science competition of the faculty of computer and information science (FRI) from the university of Ljubljana (UL). The results of our research suggest that the problem of binary classification of disease status of a patient (whether a person has a disorder or not) is solvable using a GBC (Global Brain Connectivity) representation of the fMRI data.  We were also able to build a latent space representation of the GBC data where healthy and unhealthy individuals  are clearly differentiable. However, our results for the classification of the specific disorders of the patients remained modest with an accuracy of about 50%.
 
