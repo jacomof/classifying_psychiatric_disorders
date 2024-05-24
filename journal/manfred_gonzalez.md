@@ -24,9 +24,9 @@
         (24h): D-measure dissimilarity experiments
         (4h): Experiment visualizatoins
         (8h): Report - Presentation results
-...     (12h): Quick experiment on Kernel graphs similarity
-June 2024 ([total hours for June])
+        (12h): Quick experiment on Kernel graphs similarity
+
 
 ...
-Total: [total sum of hours]
+Total: 165.5
 
